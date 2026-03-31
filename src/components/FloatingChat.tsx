@@ -14,7 +14,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../utils/cn';
 import { chatWithAI } from '../services/ai';
 
-const FloatingChat = () => {
+interface FloatingChatProps {
+  isDarkMode: boolean;
+}
+
+const FloatingChat = ({ isDarkMode }: FloatingChatProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{ role: 'bot' | 'user', text: string }[]>([
     { role: 'bot', text: '你好呀！我是小图。今天有什么我可以帮你的吗？🤖' }
@@ -85,7 +89,7 @@ const FloatingChat = () => {
             {/* Chat Messages */}
             <div 
               ref={scrollRef}
-              className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50"
+              className={`flex-1 overflow-y-auto p-4 space-y-4 ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}
             >
               {messages.map((msg, idx) => (
                 <motion.div
@@ -105,7 +109,7 @@ const FloatingChat = () => {
                   </div>
                   <div className={cn(
                     "p-3 rounded-2xl border-2 border-slate-900 text-sm font-medium shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]",
-                    msg.role === 'bot' ? "bg-white text-slate-700" : "bg-primary text-white"
+                    msg.role === 'bot' ? (isDarkMode ? "bg-slate-700 text-white" : "bg-white text-slate-700") : "bg-primary text-white"
                   )}>
                     {msg.text}
                   </div>
@@ -116,7 +120,7 @@ const FloatingChat = () => {
                   <div className="w-8 h-8 rounded-lg border-2 border-slate-900 flex items-center justify-center shrink-0 bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
                     <Bot size={16} className="text-primary" />
                   </div>
-                  <div className="p-3 rounded-2xl border-2 border-slate-900 bg-white shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+                  <div className={`p-3 rounded-2xl border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] ${isDarkMode ? 'bg-slate-700' : 'bg-white'}`}>
                     <div className="flex gap-1">
                       <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6 }} className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
                       <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }} className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
@@ -128,11 +132,11 @@ const FloatingChat = () => {
             </div>
 
             {/* Chat Input */}
-            <div className="p-4 bg-white border-t-4 border-slate-900">
+            <div className={`p-4 border-t-4 border-slate-900 ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
               <div className="flex gap-2">
                 <Input 
                   placeholder="输入消息..." 
-                  className="cartoon-input flex-1 h-10 text-sm"
+                  className={`cartoon-input flex-1 h-10 text-sm ${isDarkMode ? 'bg-slate-700 text-white' : ''}`}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onPressEnter={handleSend}

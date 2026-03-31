@@ -17,7 +17,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import dayjs from 'dayjs';
 import { generateFortune } from '../services/ai';
 
-const FortuneGenerator = () => {
+interface FortuneGeneratorProps {
+  isDarkMode: boolean;
+}
+
+const FortuneGenerator = ({ isDarkMode }: FortuneGeneratorProps) => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [form, setForm] = useState({
@@ -76,14 +80,14 @@ const FortuneGenerator = () => {
   };
 
   return (
-    <div className="w-full py-4 md:py-6 px-4">
+    <div className={`w-full py-4 md:py-6 px-4 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-6 md:mb-8"
       >
-        <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">神秘运势生成器 🔮</h1>
-        <p className="text-base md:text-lg text-slate-600 font-medium">让卡通精灵揭示你的命运！</p>
+        <h1 className={`text-3xl md:text-4xl font-black mb-3 tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>神秘运势生成器 🔮</h1>
+        <p className={`text-base md:text-lg font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>让卡通精灵揭示你的命运！</p>
       </motion.div>
 
       <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-start">
@@ -92,13 +96,13 @@ const FortuneGenerator = () => {
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="cartoon-card p-6"
+            className={`cartoon-card p-6 ${isDarkMode ? 'bg-slate-800' : ''}`}
           >
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-black text-slate-900 uppercase tracking-wider mb-2">运势类型</label>
+                <label className={`block text-sm font-black uppercase tracking-wider mb-2 ${isDarkMode ? 'text-slate-300' : 'text-slate-900'}`}>运势类型</label>
                 <Select 
-                  className="w-full h-12"
+                  className={`w-full h-12 ${isDarkMode ? 'bg-slate-700 text-white' : ''}`}
                   defaultValue="today"
                   onChange={(val) => setForm({ ...form, type: val })}
                   options={[
@@ -128,14 +132,14 @@ const FortuneGenerator = () => {
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="cartoon-card p-4 bg-slate-50/50"
+                className={`cartoon-card p-4 ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50/50'}`}
               >
-              <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">最近的命运</h3>
+              <h3 className="text-sm font-black uppercase tracking-widest mb-4 text-slate-400">最近的命运</h3>
               <div className="space-y-3">
                 {history.map((item, idx) => (
                   <div 
                     key={idx} 
-                    className="flex items-center justify-between p-3 bg-white rounded-xl border-2 border-slate-200 cursor-pointer hover:border-primary transition-all"
+                    className={`flex items-center justify-between p-3 rounded-xl border-2 cursor-pointer hover:border-primary transition-all ${isDarkMode ? 'bg-slate-700 border-slate-600' : 'bg-white border-slate-200'}`}
                     onClick={() => setResult(item)}
                   >
                     <div className="flex items-center gap-3">
@@ -143,11 +147,11 @@ const FortuneGenerator = () => {
                         <Star size={14} />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-slate-700 truncate max-w-[150px]">{item.fortune}</p>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase">{item.type === 'today' ? '今日' : item.type === 'love' ? '爱情' : item.type === 'career' ? '事业' : '财富'} • {dayjs(item.date).format('M月D日')}</p>
+                        <p className={`text-xs font-bold truncate max-w-[150px] ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>{item.fortune}</p>
+                        <p className={`text-[10px] font-bold uppercase ${isDarkMode ? 'text-slate-400' : 'text-slate-400'}`}>{item.type === 'today' ? '今日' : item.type === 'love' ? '爱情' : item.type === 'career' ? '事业' : '财富'} • {dayjs(item.date).format('M月D日')}</p>
                       </div>
                     </div>
-                    <ChevronRight size={16} className="text-slate-300" />
+                    <ChevronRight size={16} className={isDarkMode ? 'text-slate-500' : 'text-slate-300'} />
                   </div>
                 ))}
               </div>
@@ -174,62 +178,62 @@ const FortuneGenerator = () => {
                   />
                   <Sparkles className="absolute inset-0 m-auto text-primary w-8 h-8" />
                 </div>
-                <p className="font-bold text-slate-500 animate-pulse">正在混合星尘与像素...</p>
+                <p className={`font-bold animate-pulse ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>正在混合星尘与像素...</p>
               </motion.div>
             ) : result ? (
               <motion.div 
                   key="result"
                   initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  className="cartoon-card p-6 bg-gradient-to-br from-white to-purple-50"
+                  className={`cartoon-card p-6 ${isDarkMode ? 'bg-slate-800' : 'bg-gradient-to-br from-white to-purple-50'}`}
                 >
                 <div className="flex justify-between items-start mb-4">
-                  <h2 className="text-xl font-black text-slate-900">命运已揭晓！</h2>
+                  <h2 className={`text-xl font-black ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>命运已揭晓！</h2>
                   <div className="bg-accent text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-slate-900">
                     {form.type === 'today' ? '今日' : form.type === 'love' ? '爱情' : form.type === 'career' ? '事业' : '财富'}
                   </div>
                 </div>
 
-                <p className="text-base font-medium text-slate-700 italic mb-6 leading-relaxed">
+                <p className={`text-base font-medium italic mb-6 leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
                   “{result.fortune}”
                 </p>
 
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between mb-2">
-                      <span className="font-black text-xs uppercase tracking-widest text-slate-500">幸运指数</span>
+                      <span className={`font-black text-xs uppercase tracking-widest ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>幸运指数</span>
                       <span className="font-black text-primary">{result.score}%</span>
                     </div>
                     <Progress 
                       percent={result.score} 
                       showInfo={false} 
                       strokeColor="#8b5cf6" 
-                      trailColor="#e2e8f0"
+                      trailColor={isDarkMode ? "#334155" : "#e2e8f0"}
                       strokeWidth={12}
                       className="rounded-full overflow-hidden border-2 border-slate-900"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white p-4 rounded-2xl border-2 border-slate-900 flex items-center gap-3">
+                    <div className={`p-4 rounded-2xl border-2 border-slate-900 flex items-center gap-3 ${isDarkMode ? 'bg-slate-700' : 'bg-white'}`}>
                       <Palette className="text-blue-500" size={20} />
                       <div>
                         <p className="text-[10px] font-black uppercase text-slate-400">幸运色</p>
-                        <p className="font-bold text-sm">{result.luckyColor}</p>
+                        <p className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{result.luckyColor}</p>
                       </div>
                     </div>
-                    <div className="bg-white p-4 rounded-2xl border-2 border-slate-900 flex items-center gap-3">
+                    <div className={`p-4 rounded-2xl border-2 border-slate-900 flex items-center gap-3 ${isDarkMode ? 'bg-slate-700' : 'bg-white'}`}>
                       <Hash className="text-orange-500" size={20} />
                       <div>
                         <p className="text-[10px] font-black uppercase text-slate-400">幸运数字</p>
-                        <p className="font-bold text-sm">{result.luckyNumber}</p>
+                        <p className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{result.luckyNumber}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-yellow-50 p-4 rounded-2xl border-2 border-dashed border-yellow-400 flex items-start gap-3">
-                    <Lightbulb className="text-yellow-500 shrink-0" size={20} />
-                    <p className="text-sm font-medium text-yellow-800">
+                  <div className={`p-4 rounded-2xl border-2 border-dashed flex items-start gap-3 ${isDarkMode ? 'bg-slate-700 border-slate-600' : 'bg-yellow-50 border-yellow-400'}`}>
+                    <Lightbulb className={isDarkMode ? 'text-yellow-400 shrink-0' : 'text-yellow-500 shrink-0'} size={20} />
+                    <p className={`text-sm font-medium ${isDarkMode ? 'text-slate-300' : 'text-yellow-800'}`}>
                       <span className="font-black">大师建议：</span> {result.advice}
                     </p>
                   </div>
@@ -237,7 +241,7 @@ const FortuneGenerator = () => {
 
                 <Button 
                   icon={<RefreshCw size={16} />} 
-                  className="mt-8 border-2 border-slate-900 font-bold rounded-xl h-10"
+                  className={`mt-8 border-2 border-slate-900 font-bold rounded-xl h-10 ${isDarkMode ? 'bg-slate-700 text-white' : ''}`}
                   onClick={() => setResult(null)}
                 >
                   再试一次
@@ -245,10 +249,10 @@ const FortuneGenerator = () => {
               </motion.div>
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-40">
-                <div className="w-32 h-32 bg-slate-200 rounded-full flex items-center justify-center mb-4">
-                  <Sparkles size={48} className="text-slate-400" />
+                <div className={`w-32 h-32 rounded-full flex items-center justify-center mb-4 ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
+                  <Sparkles size={48} className={isDarkMode ? 'text-slate-500' : 'text-slate-400'} />
                 </div>
-                <p className="font-bold text-slate-500">选择运势类型，开启你的命运之旅！</p>
+                <p className={`font-bold ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>选择运势类型，开启你的命运之旅！</p>
               </div>
             )}
           </AnimatePresence>
