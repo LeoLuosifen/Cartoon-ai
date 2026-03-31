@@ -147,5 +147,5 @@ Cartoon-ai/
 ## 联系方式
 
 - 项目地址：<https://cartoon.us.ci/>
-- 如有问题，请在 GitHub 仓库提交 Issue
+- 如有问题，请在 GitHub 仓库提交 Issue 或者邮箱联系
 
