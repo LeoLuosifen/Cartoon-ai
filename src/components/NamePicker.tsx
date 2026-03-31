@@ -81,22 +81,22 @@ const NamePicker = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4">
+    <div className="w-full py-4 md:py-6 px-4">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
+        className="text-center mb-6 md:mb-8"
       >
-        <h1 className="text-5xl font-black text-slate-900 mb-4 tracking-tight">随机点名器 🎲</h1>
-        <p className="text-xl text-slate-600 font-medium">上传名单，让命运决定谁是幸运儿！</p>
+        <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">随机点名器 🎲</h1>
+        <p className="text-base md:text-lg text-slate-600 font-medium">上传名单，让命运决定谁是幸运儿！</p>
       </motion.div>
 
-      <div className="grid md:grid-cols-2 gap-8 items-start">
+      <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-start">
         {/* List Management */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="cartoon-card p-8 flex flex-col min-h-[400px]"
+          className="cartoon-card p-6 flex flex-col min-h-[350px]"
         >
           <div className="flex justify-between items-center mb-4">
             <label className="text-sm font-black text-slate-900 uppercase tracking-wider">姓名名单 ({names.length})</label>
@@ -120,12 +120,12 @@ const NamePicker = () => {
               beforeUpload={handleFileUpload}
               className="flex-1 rounded-2xl border-4 border-dashed border-slate-300 hover:border-primary transition-colors bg-slate-50"
             >
-              <div className="py-12 flex flex-col items-center justify-center space-y-4">
-                <div className="w-16 h-16 bg-white rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-                  <FileText className="text-primary" />
+              <div className="py-8 flex flex-col items-center justify-center space-y-3">
+                <div className="w-12 h-12 bg-white rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+                  <FileText className="text-primary" size={20} />
                 </div>
                 <div>
-                  <p className="font-black text-slate-900">点击或拖拽上传名单</p>
+                  <p className="font-black text-slate-900 text-sm">点击或拖拽上传名单</p>
                   <p className="text-xs text-slate-400 font-bold">支持 .txt 或 .csv 文件</p>
                 </div>
               </div>
@@ -161,71 +161,71 @@ const NamePicker = () => {
           <AnimatePresence mode="wait">
             {names.length > 0 ? (
               <motion.div 
-                key="picking-area"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="cartoon-card p-8 bg-white h-full flex flex-col items-center justify-center text-center"
-              >
-                <div className="mb-12 w-full">
-                  <div className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">
-                    {isPicking ? '正在疯狂挑选...' : finalName ? '中奖者是！🎉' : '准备好了吗？'}
+                  key="picking-area"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="cartoon-card p-6 bg-white h-full flex flex-col items-center justify-center text-center"
+                >
+                  <div className="mb-8 w-full">
+                    <div className="text-sm font-black text-slate-400 uppercase tracking-widest mb-3">
+                      {isPicking ? '正在疯狂挑选...' : finalName ? '中奖者是！🎉' : '准备好了吗？'}
+                    </div>
+                    
+                    <div className="h-24 flex items-center justify-center">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={isPicking ? 'picking' : (finalName ? 'result' : 'idle')}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.2 }}
+                          className={cn(
+                            "text-4xl md:text-5xl font-black tracking-tighter text-center",
+                            isPicking ? "text-slate-900" : finalName ? "text-primary scale-110" : "text-slate-200"
+                          )}
+                        >
+                          {isPicking ? names[currentIndex] : (finalName || '???')}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
                   </div>
-                  
-                  <div className="h-32 flex items-center justify-center">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={isPicking ? 'picking' : (finalName ? 'result' : 'idle')}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.2 }}
-                        className={cn(
-                          "text-6xl font-black tracking-tighter text-center",
-                          isPicking ? "text-slate-900" : finalName ? "text-primary scale-110" : "text-slate-200"
-                        )}
-                      >
-                        {isPicking ? names[currentIndex] : (finalName || '???')}
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-                </div>
 
-                <div className="w-full space-y-4">
-                  {!isPicking ? (
-                    <Button 
-                      type="primary" 
-                      size="large" 
-                      block 
-                      icon={<Play size={20} />}
-                      className="cartoon-button h-16 text-xl"
-                      onClick={startPicking}
-                    >
-                      开始点名
-                    </Button>
-                  ) : (
-                    <Button 
-                      danger
-                      size="large" 
-                      block 
-                      icon={<Square size={20} />}
-                      className="cartoon-button bg-red-500 hover:bg-red-600 h-16 text-xl"
-                      onClick={stopPicking}
-                    >
-                      停止点名
-                    </Button>
-                  )}
-                  
-                  {finalName && !isPicking && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-primary font-black animate-bounce"
-                    >
-                      恭喜这位幸运儿！✨
-                    </motion.div>
-                  )}
-                </div>
-              </motion.div>
+                  <div className="w-full space-y-3">
+                    {!isPicking ? (
+                      <Button 
+                        type="primary" 
+                        size="large" 
+                        block 
+                        icon={<Play size={20} />}
+                        className="cartoon-button h-14 text-lg"
+                        onClick={startPicking}
+                      >
+                        开始点名
+                      </Button>
+                    ) : (
+                      <Button 
+                        danger
+                        size="large" 
+                        block 
+                        icon={<Square size={20} />}
+                        className="cartoon-button bg-red-500 hover:bg-red-600 h-14 text-lg"
+                        onClick={stopPicking}
+                      >
+                        停止点名
+                      </Button>
+                    )}
+                    
+                    {finalName && !isPicking && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-primary font-black animate-bounce text-sm"
+                      >
+                        恭喜这位幸运儿！✨
+                      </motion.div>
+                    )}
+                  </div>
+                </motion.div>
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-40">
                 <div className="w-32 h-32 bg-slate-200 rounded-full flex items-center justify-center mb-4">

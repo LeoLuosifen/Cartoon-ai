@@ -76,23 +76,23 @@ const FortuneGenerator = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4">
+    <div className="w-full py-4 md:py-6 px-4">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12"
+        className="text-center mb-6 md:mb-8"
       >
-        <h1 className="text-5xl font-black text-slate-900 mb-4 tracking-tight">神秘运势生成器 🔮</h1>
-        <p className="text-xl text-slate-600 font-medium">让卡通精灵揭示你的命运！</p>
+        <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">神秘运势生成器 🔮</h1>
+        <p className="text-base md:text-lg text-slate-600 font-medium">让卡通精灵揭示你的命运！</p>
       </motion.div>
 
-      <div className="grid md:grid-cols-2 gap-8 items-start">
+      <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-start">
         {/* Form */}
-        <div className="space-y-8">
+        <div className="space-y-4">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="cartoon-card p-8"
+            className="cartoon-card p-6"
           >
             <div className="space-y-6">
               <div>
@@ -126,10 +126,10 @@ const FortuneGenerator = () => {
           {/* History */}
           {history.length > 0 && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="cartoon-card p-6 bg-slate-50/50"
-            >
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="cartoon-card p-4 bg-slate-50/50"
+              >
               <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">最近的命运</h3>
               <div className="space-y-3">
                 {history.map((item, idx) => (
@@ -178,23 +178,23 @@ const FortuneGenerator = () => {
               </motion.div>
             ) : result ? (
               <motion.div 
-                key="result"
-                initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                className="cartoon-card p-8 bg-gradient-to-br from-white to-purple-50"
-              >
-                <div className="flex justify-between items-start mb-6">
-                  <h2 className="text-2xl font-black text-slate-900">命运已揭晓！</h2>
+                  key="result"
+                  initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  className="cartoon-card p-6 bg-gradient-to-br from-white to-purple-50"
+                >
+                <div className="flex justify-between items-start mb-4">
+                  <h2 className="text-xl font-black text-slate-900">命运已揭晓！</h2>
                   <div className="bg-accent text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-slate-900">
                     {form.type === 'today' ? '今日' : form.type === 'love' ? '爱情' : form.type === 'career' ? '事业' : '财富'}
                   </div>
                 </div>
 
-                <p className="text-lg font-medium text-slate-700 italic mb-8 leading-relaxed">
+                <p className="text-base font-medium text-slate-700 italic mb-6 leading-relaxed">
                   “{result.fortune}”
                 </p>
 
-                <div className="space-y-6">
+                <div className="space-y-4">
                   <div>
                     <div className="flex justify-between mb-2">
                       <span className="font-black text-xs uppercase tracking-widest text-slate-500">幸运指数</span>
