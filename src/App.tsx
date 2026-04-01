@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import FortuneGenerator from './components/FortuneGenerator';
 import NamePicker from './components/NamePicker';
+import PythonBasics from './components/PythonBasics';
 import FloatingChat from './components/FloatingChat';
 
 type ThemeMode = 'light' | 'dark' | 'auto';
@@ -108,6 +109,8 @@ export default function App() {
                 >
                   {activeTab === 'fortune' ? (
                     <FortuneGenerator isDarkMode={isDarkMode} />
+                  ) : activeTab === 'python' ? (
+                    <PythonBasics isDarkMode={isDarkMode} />
                   ) : (
                     <NamePicker isDarkMode={isDarkMode} />
                   )}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
-import { Sparkles, UserCheck, Menu, Sun, Moon, Clock, ChevronDown } from 'lucide-react';
+import { Sparkles, UserCheck, Menu, Sun, Moon, Clock, ChevronDown, Code2 } from 'lucide-react';
 import { cn } from '../utils/cn';
 
 type ThemeMode = 'light' | 'dark' | 'auto';
@@ -20,7 +20,7 @@ const Navbar = ({ activeTab, setActiveTab, themeMode, setThemeMode, isDarkMode }
   const navItems = [
     { id: 'fortune', label: '神秘运势', icon: Sparkles },
     { id: 'picker', label: '随机点名', icon: UserCheck },
-    // 后期可以在这里添加更多功能
+    { id: 'python', label: 'Python基础', icon: Code2 },
   ];
 
   const themeOptions = [
@@ -112,8 +112,10 @@ const Navbar = ({ activeTab, setActiveTab, themeMode, setThemeMode, isDarkMode }
         placement="right"
         onClose={() => setIsDrawerOpen(false)}
         open={isDrawerOpen}
-        bodyStyle={{ padding: 0, backgroundColor: isDarkMode ? '#1e293b' : '#ffffff' }}
-        headerStyle={{ backgroundColor: isDarkMode ? '#1e293b' : '#ffffff', borderBottom: `1px solid ${isDarkMode ? '#374151' : '#e5e7eb'}` }}
+        styles={{
+          body: { padding: 0, backgroundColor: isDarkMode ? '#1e293b' : '#ffffff' },
+          header: { backgroundColor: isDarkMode ? '#1e293b' : '#ffffff', borderBottom: `1px solid ${isDarkMode ? '#374151' : '#e5e7eb'}` }
+        }}
         width={280}
       >
         <div className="p-4">
