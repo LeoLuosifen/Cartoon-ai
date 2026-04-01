@@ -23,17 +23,17 @@ type Topic = {
   animation: React.ReactNode;
 };
 
-const LoopAnimation = () => {
+const LoopAnimation = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [loopType, setLoopType] = useState<'for' | 'while'>('for');
 
   return (
-    <div className="relative w-full h-56 flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-slate-200 p-4">
-      <div className="absolute top-3 right-3 flex bg-slate-200 rounded-lg p-1 gap-1">
+    <div className={`relative w-full h-56 flex flex-col items-center justify-center rounded-xl border p-4 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+      <div className={`absolute top-3 right-3 flex rounded-lg p-1 gap-1 ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
         <button
           onClick={() => setLoopType('for')}
           className={cn(
             "px-3 py-1.5 text-xs font-bold rounded-md transition-all",
-            loopType === 'for' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+            loopType === 'for' ? (isDarkMode ? "bg-slate-700 text-indigo-400" : "bg-white text-indigo-600 shadow-sm") : (isDarkMode ? "text-slate-300 hover:text-slate-100" : "text-slate-500 hover:text-slate-700")
           )}
         >
           FOR
@@ -42,7 +42,7 @@ const LoopAnimation = () => {
           onClick={() => setLoopType('while')}
           className={cn(
             "px-3 py-1.5 text-xs font-bold rounded-md transition-all",
-            loopType === 'while' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+            loopType === 'while' ? (isDarkMode ? "bg-slate-700 text-indigo-400" : "bg-white text-indigo-600 shadow-sm") : (isDarkMode ? "text-slate-300 hover:text-slate-100" : "text-slate-500 hover:text-slate-700")
           )}
         >
           WHILE
@@ -63,7 +63,7 @@ const LoopAnimation = () => {
                 <motion.div
                   key={i}
                   animate={{
-                    backgroundColor: ["#e2e8f0", "#6366f1", "#e2e8f0"],
+                    backgroundColor: [isDarkMode ? "#334155" : "#e2e8f0", "#6366f1", isDarkMode ? "#334155" : "#e2e8f0"],
                     scale: [1, 1.1, 1]
                   }}
                   transition={{
@@ -72,13 +72,13 @@ const LoopAnimation = () => {
                     delay: i * 1,
                     times: [0, 0.2, 0.4]
                   }}
-                  className="w-12 h-12 rounded-lg flex items-center justify-center font-mono text-sm font-bold border border-slate-300"
+                  className={`w-12 h-12 rounded-lg flex items-center justify-center font-mono text-sm font-bold border ${isDarkMode ? 'border-slate-600 text-slate-100' : 'border-slate-300'}`}
                 >
                   {i}
                 </motion.div>
               ))}
             </div>
-            <p className="text-xs text-slate-500 font-mono">遍历序列中的每个元素</p>
+            <p className={`text-xs font-mono ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>遍历序列中的每个元素</p>
           </motion.div>
         ) : (
           <motion.div
@@ -90,21 +90,21 @@ const LoopAnimation = () => {
           >
             <div className="flex items-center gap-6">
               <div className="flex flex-col items-center">
-                <div className="text-xs font-bold text-slate-400 mb-2">条件: count &lt; 3</div>
+                <div className={`text-xs font-bold mb-2 ${isDarkMode ? 'text-slate-400' : 'text-slate-400'}`}>条件: count &lt; 3</div>
                 <motion.div
                   animate={{
-                    borderColor: ["#94a3b8", "#10b981", "#94a3b8"],
-                    backgroundColor: ["#ffffff", "#ecfdf5", "#ffffff"]
+                    borderColor: [isDarkMode ? "#475569" : "#94a3b8", "#10b981", isDarkMode ? "#475569" : "#94a3b8"],
+                    backgroundColor: [isDarkMode ? "#1e293b" : "#ffffff", isDarkMode ? "#0f172a" : "#ecfdf5", isDarkMode ? "#1e293b" : "#ffffff"]
                   }}
                   transition={{ repeat: Infinity, duration: 2 }}
-                  className="w-20 h-12 border-2 rounded-lg flex items-center justify-center font-mono text-lg font-bold"
+                  className={`w-20 h-12 border-2 rounded-lg flex items-center justify-center font-mono text-lg font-bold ${isDarkMode ? 'text-slate-100' : ''}`}
                 >
                   ?
                 </motion.div>
               </div>
-              <ChevronRight className="w-5 h-5 text-slate-300" />
+              <ChevronRight className={`w-5 h-5 ${isDarkMode ? 'text-slate-500' : 'text-slate-300'}`} />
               <div className="flex flex-col items-center">
-                <div className="text-xs font-bold text-slate-400 mb-2">执行 & 计数</div>
+                <div className={`text-xs font-bold mb-2 ${isDarkMode ? 'text-slate-400' : 'text-slate-400'}`}>执行 & 计数</div>
                 <motion.div
                   animate={{
                     rotate: [0, 360],
@@ -117,7 +117,7 @@ const LoopAnimation = () => {
                 </motion.div>
               </div>
             </div>
-            <p className="text-xs text-slate-500 font-mono">只要条件为真，就一直执行</p>
+            <p className={`text-xs font-mono ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>只要条件为真，就一直执行</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -125,20 +125,20 @@ const LoopAnimation = () => {
   );
 };
 
-const OperatorAnimation = () => {
+const OperatorAnimation = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [op, setOp] = useState<'+' | '-' | '*' | '/'>('+');
   const results = { '+': 12, '-': 8, '*': 20, '/': 5 };
 
   return (
-    <div className="relative w-full h-56 flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-slate-200 p-4">
-      <div className="absolute top-3 right-3 flex bg-slate-200 rounded-lg p-1 gap-1">
+    <div className={`relative w-full h-56 flex flex-col items-center justify-center rounded-xl border p-4 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+      <div className={`absolute top-3 right-3 flex rounded-lg p-1 gap-1 ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
         {(['+', '-', '*', '/'] as const).map((o) => (
           <button
             key={o}
             onClick={() => setOp(o)}
             className={cn(
               "w-9 h-9 flex items-center justify-center text-sm font-bold rounded-md transition-all",
-              op === o ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+              op === o ? (isDarkMode ? "bg-slate-700 text-indigo-400" : "bg-white text-indigo-600 shadow-sm") : (isDarkMode ? "text-slate-300 hover:text-slate-100" : "text-slate-500 hover:text-slate-700")
             )}
           >
             {o}
@@ -147,7 +147,7 @@ const OperatorAnimation = () => {
       </div>
 
       <div className="flex items-center gap-4 mt-4">
-        <div className="w-14 h-14 bg-white border-2 border-slate-200 rounded-lg flex items-center justify-center font-bold text-xl shadow-sm">10</div>
+        <div className={`w-14 h-14 rounded-lg flex items-center justify-center font-bold text-xl shadow-sm ${isDarkMode ? 'bg-slate-700 border-2 border-slate-600 text-slate-100' : 'bg-white border-2 border-slate-200'}`}>10</div>
         <motion.div
           key={op}
           initial={{ opacity: 0, scale: 0.5 }}
@@ -157,13 +157,13 @@ const OperatorAnimation = () => {
         >
           {op}
         </motion.div>
-        <div className="w-14 h-14 bg-white border-2 border-slate-200 rounded-lg flex items-center justify-center font-bold text-xl shadow-sm">2</div>
-        <ChevronRight className="w-6 h-6 text-slate-400" />
+        <div className={`w-14 h-14 rounded-lg flex items-center justify-center font-bold text-xl shadow-sm ${isDarkMode ? 'bg-slate-700 border-2 border-slate-600 text-slate-100' : 'bg-white border-2 border-slate-200'}`}>2</div>
+        <ChevronRight className={`w-6 h-6 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`} />
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="w-16 h-14 bg-green-50 border-2 border-green-200 rounded-lg flex items-center justify-center font-bold text-xl text-green-600 shadow-sm"
+          className={`w-16 h-14 rounded-lg flex items-center justify-center font-bold text-xl shadow-sm ${isDarkMode ? 'bg-green-900/30 border-2 border-green-700 text-green-400' : 'bg-green-50 border-2 border-green-200 text-green-600'}`}
         >
           {results[op]}
         </motion.div>
@@ -172,9 +172,9 @@ const OperatorAnimation = () => {
   );
 };
 
-const ConditionAnimation = () => {
+const ConditionAnimation = ({ isDarkMode }: { isDarkMode: boolean }) => {
   return (
-    <div className="relative w-full h-56 flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-slate-200 p-4">
+    <div className={`relative w-full h-56 flex flex-col items-center justify-center rounded-xl border p-4 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
       <div className="flex flex-col items-center mt-2">
         <motion.div
           className="w-14 h-14 bg-indigo-900 rounded-lg flex items-center justify-center font-bold text-white text-xl z-10"
@@ -184,8 +184,8 @@ const ConditionAnimation = () => {
 
         <div className="relative w-48 h-32 mt-0">
           <svg className="absolute inset-0 w-full h-full" style={{ overflow: 'visible' }}>
-            <line x1="50%" y1="7" x2="25%" y2="90%" stroke="#94a3b8" strokeWidth="2" />
-            <line x1="50%" y1="7" x2="75%" y2="90%" stroke="#94a3b8" strokeWidth="2" />
+            <line x1="50%" y1="7" x2="25%" y2="90%" stroke={isDarkMode ? '#475569' : '#94a3b8'} strokeWidth="2" />
+            <line x1="50%" y1="7" x2="75%" y2="90%" stroke={isDarkMode ? '#475569' : '#94a3b8'} strokeWidth="2" />
           </svg>
 
           <motion.div
@@ -206,10 +206,10 @@ const ConditionAnimation = () => {
 
         <div className="flex gap-20">
           <div className="flex flex-col items-center">
-            <span className="text-sm font-bold text-green-600">True</span>
+            <span className={`text-sm font-bold ${isDarkMode ? 'text-green-400' : 'text-green-600'}`}>True</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-sm font-bold text-red-600">False</span>
+            <span className={`text-sm font-bold ${isDarkMode ? 'text-red-400' : 'text-red-600'}`}>False</span>
           </div>
         </div>
       </div>
@@ -217,9 +217,9 @@ const ConditionAnimation = () => {
   );
 };
 
-const OOPAnimation = () => {
+const OOPAnimation = ({ isDarkMode }: { isDarkMode: boolean }) => {
   return (
-    <div className="relative w-full h-56 flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-slate-200 p-4">
+    <div className={`relative w-full h-56 flex flex-col items-center justify-center rounded-xl border p-4 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
       <div className="flex items-center gap-6 mt-4">
         <motion.div
           initial={{ x: -20, opacity: 0 }}
@@ -233,7 +233,7 @@ const OOPAnimation = () => {
             <div className="w-full h-0.5 bg-indigo-700 mb-1"></div>
             <div className="w-full h-0.5 bg-indigo-700 mb-1"></div>
           </div>
-          <p className="text-xs text-slate-500 font-mono">蓝图 (Class)</p>
+          <p className={`text-xs font-mono ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>蓝图 (Class)</p>
         </motion.div>
         
         <motion.div
@@ -264,26 +264,26 @@ const OOPAnimation = () => {
               <span className="text-xs text-indigo-200">Instance</span>
             </div>
           </motion.div>
-          <p className="text-xs text-slate-500 font-mono">对象 (Object)</p>
+          <p className={`text-xs font-mono ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>对象 (Object)</p>
         </motion.div>
       </div>
     </div>
   );
 };
 
-const VariablesAnimation = () => {
+const VariablesAnimation = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [value, setValue] = useState<string>('Hello');
 
   return (
-    <div className="relative w-full h-56 flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-slate-200 p-4">
-      <div className="absolute top-3 right-3 flex bg-slate-200 rounded-lg p-1 gap-1">
+    <div className={`relative w-full h-56 flex flex-col items-center justify-center rounded-xl border p-4 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+      <div className={`absolute top-3 right-3 flex rounded-lg p-1 gap-1 ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
         {['Hello', '42', 'True', '[1,2,3]'].map((v) => (
           <button
             key={v}
             onClick={() => setValue(v)}
             className={cn(
               "px-2 py-1.5 text-xs font-bold rounded-md transition-all",
-              value === v ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+              value === v ? (isDarkMode ? "bg-slate-700 text-indigo-400" : "bg-white text-indigo-600 shadow-sm") : (isDarkMode ? "text-slate-300 hover:text-slate-100" : "text-slate-500 hover:text-slate-700")
             )}
           >
             {v}
@@ -293,27 +293,27 @@ const VariablesAnimation = () => {
 
       <div className="flex flex-col items-center gap-5 mt-4">
         <div className="flex items-center gap-3">
-          <div className="w-24 h-12 bg-indigo-100 rounded-lg flex items-center justify-center font-mono text-sm font-bold border border-indigo-300">
+          <div className={`w-24 h-12 rounded-lg flex items-center justify-center font-mono text-sm font-bold border ${isDarkMode ? 'bg-indigo-900/50 border-indigo-700 text-slate-100' : 'bg-indigo-100 border-indigo-300'}`}>
             message
           </div>
-          <ChevronRight className="w-5 h-5 text-slate-400" />
+          <ChevronRight className={`w-5 h-5 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`} />
           <motion.div
             key={value}
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
-            className="w-28 h-12 bg-white rounded-lg flex items-center justify-center font-mono text-sm font-bold border border-slate-300 shadow-sm"
+            className={`w-28 h-12 rounded-lg flex items-center justify-center font-mono text-sm font-bold border shadow-sm ${isDarkMode ? 'bg-slate-700 border-slate-600 text-slate-100' : 'bg-white border-slate-300'}`}
           >
             {value}
           </motion.div>
         </div>
-        <p className="text-xs text-slate-500 font-mono">变量存储数据值</p>
+        <p className={`text-xs font-mono ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>变量存储数据值</p>
       </div>
     </div>
   );
 };
 
-const DataTypesAnimation = () => {
+const DataTypesAnimation = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [dataType, setDataType] = useState<'string' | 'number' | 'boolean' | 'list'>('string');
   const examples = {
     string: '"Hello"',
@@ -323,15 +323,15 @@ const DataTypesAnimation = () => {
   };
 
   return (
-    <div className="relative w-full h-56 flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-slate-200 p-4">
-      <div className="absolute top-3 right-3 flex bg-slate-200 rounded-lg p-1 gap-1">
+    <div className={`relative w-full h-56 flex flex-col items-center justify-center rounded-xl border p-4 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+      <div className={`absolute top-3 right-3 flex rounded-lg p-1 gap-1 ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
         {(['string', 'number', 'boolean', 'list'] as const).map((type) => (
           <button
             key={type}
             onClick={() => setDataType(type)}
             className={cn(
               "px-2 py-1.5 text-xs font-bold rounded-md transition-all",
-              dataType === type ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+              dataType === type ? (isDarkMode ? "bg-slate-700 text-indigo-400" : "bg-white text-indigo-600 shadow-sm") : (isDarkMode ? "text-slate-300 hover:text-slate-100" : "text-slate-500 hover:text-slate-700")
             )}
           >
             {type}
@@ -346,10 +346,10 @@ const DataTypesAnimation = () => {
         transition={{ duration: 0.3 }}
         className="flex flex-col items-center gap-5 mt-8"
       >
-        <div className="w-36 h-24 bg-white rounded-lg flex items-center justify-center font-mono text-lg font-bold border-2 border-slate-300 shadow-sm">
+        <div className={`w-36 h-24 rounded-lg flex items-center justify-center font-mono text-lg font-bold border-2 shadow-sm ${isDarkMode ? 'bg-slate-700 border-slate-600 text-slate-100' : 'bg-white border-slate-300'}`}>
           {examples[dataType]}
         </div>
-        <div className="px-4 py-1.5 bg-indigo-100 rounded-full text-indigo-600 text-sm font-bold">
+        <div className={`px-4 py-1.5 rounded-full text-sm font-bold ${isDarkMode ? 'bg-indigo-900/50 text-indigo-400' : 'bg-indigo-100 text-indigo-600'}`}>
           {dataType}
         </div>
       </motion.div>
@@ -357,19 +357,19 @@ const DataTypesAnimation = () => {
   );
 };
 
-const FunctionsAnimation = () => {
+const FunctionsAnimation = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [input, setInput] = useState<number>(5);
 
   return (
-    <div className="relative w-full h-56 flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-slate-200 p-4">
-      <div className="absolute top-3 right-3 flex bg-slate-200 rounded-lg p-1 gap-1">
+    <div className={`relative w-full h-56 flex flex-col items-center justify-center rounded-xl border p-4 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+      <div className={`absolute top-3 right-3 flex rounded-lg p-1 gap-1 ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
         {[3, 5, 7, 10].map((num) => (
           <button
             key={num}
             onClick={() => setInput(num)}
             className={cn(
               "w-9 h-9 flex items-center justify-center text-sm font-bold rounded-md transition-all",
-              input === num ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+              input === num ? (isDarkMode ? "bg-slate-700 text-indigo-400" : "bg-white text-indigo-600 shadow-sm") : (isDarkMode ? "text-slate-300 hover:text-slate-100" : "text-slate-500 hover:text-slate-700")
             )}
           >
             {num}
@@ -388,16 +388,16 @@ const FunctionsAnimation = () => {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
-            className="w-12 h-12 bg-white rounded-lg flex items-center justify-center font-bold border border-slate-300 shadow-sm"
+            className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold border shadow-sm ${isDarkMode ? 'bg-slate-700 border-slate-600 text-slate-100' : 'bg-white border-slate-300'}`}
           >
             {input}
           </motion.div>
-          <ChevronRight className="w-5 h-5 text-slate-400" />
+          <ChevronRight className={`w-5 h-5 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`} />
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="w-16 h-12 bg-green-50 rounded-lg flex items-center justify-center font-bold text-green-600 border border-green-200 shadow-sm"
+            className={`w-16 h-12 rounded-lg flex items-center justify-center font-bold shadow-sm ${isDarkMode ? 'bg-green-900/30 border border-green-700 text-green-400' : 'bg-green-50 border border-green-200 text-green-600'}`}
           >
             {input * input}
           </motion.div>
@@ -407,19 +407,19 @@ const FunctionsAnimation = () => {
   );
 };
 
-const DataStructuresAnimation = () => {
+const DataStructuresAnimation = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const [structure, setStructure] = useState<'list' | 'tuple' | 'str' | 'set' | 'dict'>('list');
 
   return (
-    <div className="relative w-full h-56 flex flex-col items-center justify-center bg-slate-50 rounded-xl border border-slate-200 p-4">
-      <div className="absolute top-3 left-3 right-3 flex bg-slate-200 rounded-lg p-1 gap-1 justify-center">
+    <div className={`relative w-full h-56 flex flex-col items-center justify-center rounded-xl border p-4 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
+      <div className={`absolute top-3 left-3 right-3 flex rounded-lg p-1 gap-1 justify-center ${isDarkMode ? 'bg-slate-700' : 'bg-slate-200'}`}>
         {(['list', 'tuple', 'str', 'set', 'dict'] as const).map((type) => (
           <button
             key={type}
             onClick={() => setStructure(type)}
             className={cn(
               "px-3 py-1.5 text-xs font-bold rounded-md transition-all",
-              structure === type ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+              structure === type ? (isDarkMode ? "bg-slate-700 text-indigo-400" : "bg-white text-indigo-600 shadow-sm") : (isDarkMode ? "text-slate-300 hover:text-slate-100" : "text-slate-500 hover:text-slate-700")
             )}
           >
             {type.toUpperCase()}
@@ -438,16 +438,16 @@ const DataStructuresAnimation = () => {
           <div className="flex flex-col items-center">
             <div className="flex gap-4 mb-2">
               <div className="flex flex-col items-center">
-                <span className="text-xs text-slate-500 mb-1">索引 0</span>
-                <div className="w-16 h-12 bg-white border-2 border-indigo-400 rounded-lg flex items-center justify-center font-bold text-indigo-600 shadow-sm">10</div>
+                <span className={`text-xs mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>索引 0</span>
+                <div className={`w-16 h-12 rounded-lg flex items-center justify-center font-bold shadow-sm ${isDarkMode ? 'bg-slate-700 border-2 border-indigo-700 text-indigo-400' : 'bg-white border-2 border-indigo-400 text-indigo-600'}`}>10</div>
               </div>
               <div className="flex flex-col items-center">
-                <span className="text-xs text-slate-500 mb-1">索引 1</span>
-                <div className="w-16 h-12 bg-white border-2 border-indigo-400 rounded-lg flex items-center justify-center font-bold text-indigo-600 shadow-sm">20</div>
+                <span className={`text-xs mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>索引 1</span>
+                <div className={`w-16 h-12 rounded-lg flex items-center justify-center font-bold shadow-sm ${isDarkMode ? 'bg-slate-700 border-2 border-indigo-700 text-indigo-400' : 'bg-white border-2 border-indigo-400 text-indigo-600'}`}>20</div>
               </div>
               <div className="flex flex-col items-center">
-                <span className="text-xs text-slate-500 mb-1">索引 2</span>
-                <div className="w-16 h-12 bg-white border-2 border-indigo-400 rounded-lg flex items-center justify-center font-bold text-indigo-600 shadow-sm">30</div>
+                <span className={`text-xs mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>索引 2</span>
+                <div className={`w-16 h-12 rounded-lg flex items-center justify-center font-bold shadow-sm ${isDarkMode ? 'bg-slate-700 border-2 border-indigo-700 text-indigo-400' : 'bg-white border-2 border-indigo-400 text-indigo-600'}`}>30</div>
               </div>
             </div>
           </div>
@@ -455,9 +455,9 @@ const DataStructuresAnimation = () => {
 
         {structure === 'tuple' && (
           <div className="flex items-center">
-            <div className="flex gap-2 px-4 py-2 bg-slate-100 rounded-full border border-slate-200">
+            <div className={`flex gap-2 px-4 py-2 rounded-full border ${isDarkMode ? 'bg-slate-700 border-slate-600' : 'bg-slate-100 border-slate-200'}`}>
               {[1, 2, 3].map((num, index) => (
-                <div key={index} className="w-10 h-10 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center font-bold text-slate-700 shadow-sm">
+                <div key={index} className={`w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-sm ${isDarkMode ? 'bg-slate-600 border-2 border-slate-500 text-slate-100' : 'bg-white border-2 border-slate-300 text-slate-700'}`}>
                   {num}
                 </div>
               ))}
@@ -489,7 +489,7 @@ const DataStructuresAnimation = () => {
         {structure === 'set' && (
           <div className="relative w-32 h-32">
             <svg className="absolute inset-0" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="40" stroke="#94a3b8" strokeWidth="2" fill="none" strokeDasharray="4" />
+              <circle cx="50" cy="50" r="40" stroke={isDarkMode ? '#475569' : '#94a3b8'} strokeWidth="2" fill="none" strokeDasharray="4" />
             </svg>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="w-12 h-12 bg-green-500 rounded-md flex items-center justify-center font-bold text-white shadow-sm transform rotate-12">C</div>
@@ -518,20 +518,20 @@ const DataStructuresAnimation = () => {
         {structure === 'dict' && (
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
-              <div className="px-4 py-2 bg-yellow-100 rounded-lg border border-yellow-200 font-bold text-yellow-800">
+              <div className={`px-4 py-2 rounded-lg border font-bold ${isDarkMode ? 'bg-yellow-900/30 border-yellow-700 text-yellow-400' : 'bg-yellow-100 border-yellow-200 text-yellow-800'}`}>
                 Key: name
               </div>
-              <ChevronRight className="w-4 h-4 text-slate-400" />
-              <div className="px-4 py-2 bg-white rounded-lg border border-slate-200 font-bold text-slate-700">
+              <ChevronRight className={`w-4 h-4 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`} />
+              <div className={`px-4 py-2 rounded-lg border font-bold ${isDarkMode ? 'bg-slate-700 border-slate-600 text-slate-100' : 'bg-white border-slate-200 text-slate-700'}`}>
                 Value: Alice
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="px-4 py-2 bg-yellow-100 rounded-lg border border-yellow-200 font-bold text-yellow-800">
+              <div className={`px-4 py-2 rounded-lg border font-bold ${isDarkMode ? 'bg-yellow-900/30 border-yellow-700 text-yellow-400' : 'bg-yellow-100 border-yellow-200 text-yellow-800'}`}>
                 Key: age
               </div>
-              <ChevronRight className="w-4 h-4 text-slate-400" />
-              <div className="px-4 py-2 bg-white rounded-lg border border-slate-200 font-bold text-slate-700">
+              <ChevronRight className={`w-4 h-4 ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`} />
+              <div className={`px-4 py-2 rounded-lg border font-bold ${isDarkMode ? 'bg-slate-700 border-slate-600 text-slate-100' : 'bg-white border-slate-200 text-slate-700'}`}>
                 Value: 25
               </div>
             </div>
@@ -552,7 +552,7 @@ const PythonBasics = ({ isDarkMode }: { isDarkMode: boolean }) => {
       icon: <Variable className="w-5 h-5" />,
       description: '变量用于存储数据值。在Python中，变量不需要声明类型。',
       code: 'message = "Hello, World!"\nprint(message)',
-      animation: <VariablesAnimation />
+      animation: <VariablesAnimation isDarkMode={isDarkMode} />
     },
     {
       id: 'data-types',
@@ -560,7 +560,7 @@ const PythonBasics = ({ isDarkMode }: { isDarkMode: boolean }) => {
       icon: <Type className="w-5 h-5" />,
       description: 'Python有多种数据类型，包括字符串、数字、布尔值、列表等。',
       code: 'string = "Hello"\nnumber = 42\nbool_value = True\nlist_data = [1, 2, 3]',
-      animation: <DataTypesAnimation />
+      animation: <DataTypesAnimation isDarkMode={isDarkMode} />
     },
     {
       id: 'condition',
@@ -568,7 +568,7 @@ const PythonBasics = ({ isDarkMode }: { isDarkMode: boolean }) => {
       icon: <GitBranch className="w-5 h-5" />,
       description: '使用if, elif, else来根据条件执行不同的代码块。Python使用缩进来定义代码块。',
       code: 'if score >= 60:\n    print("及格")\nelse:\n    print("不及格")',
-      animation: <ConditionAnimation />
+      animation: <ConditionAnimation isDarkMode={isDarkMode} />
     },
     {
       id: 'loops',
@@ -576,7 +576,7 @@ const PythonBasics = ({ isDarkMode }: { isDarkMode: boolean }) => {
       icon: <Repeat className="w-5 h-5" />,
       description: 'for循环用于遍历序列（如列表或范围），while循环在给定条件为真时持续运行。',
       code: '# For 循环\nfor i in range(3):\n    print(i)\n\n# While 循环\ncount = 0\nwhile count < 3:\n    print(count)\n    count += 1',
-      animation: <LoopAnimation />
+      animation: <LoopAnimation isDarkMode={isDarkMode} />
     },
     {
       id: 'functions',
@@ -584,7 +584,7 @@ const PythonBasics = ({ isDarkMode }: { isDarkMode: boolean }) => {
       icon: <Box className="w-5 h-5" />,
       description: '函数是组织好的、可重复使用的、用来实现特定功能的代码块。',
       code: 'def square(x):\n    return x * x\n\nresult = square(5)\nprint(result)',
-      animation: <FunctionsAnimation />
+      animation: <FunctionsAnimation isDarkMode={isDarkMode} />
     },
     {
       id: 'operators',
@@ -592,7 +592,7 @@ const PythonBasics = ({ isDarkMode }: { isDarkMode: boolean }) => {
       icon: <Calculator className="w-5 h-5" />,
       description: 'Python支持各种运算符，包括算术、比较、逻辑等运算符。',
       code: 'a = 10\nb = 2\n\nprint(a + b)  # 加法\nprint(a - b)  # 减法\nprint(a * b)  # 乘法\nprint(a / b)  # 除法',
-      animation: <OperatorAnimation />
+      animation: <OperatorAnimation isDarkMode={isDarkMode} />
     },
     {
       id: 'data-structures',
@@ -600,7 +600,7 @@ const PythonBasics = ({ isDarkMode }: { isDarkMode: boolean }) => {
       icon: <Database className="w-5 h-5" />,
       description: 'Python提供了多种内置数据结构，如字符串、列表、字典、元组和集合。',
       code: '# 字符串\nmy_str = "Hello"\n\n# 列表\nmy_list = [1, 2, 3]\n\n# 字典\nmy_dict = {"name": "Buddy", "age": 3}\n\n# 元组\nmy_tuple = (1, 2, 3)\n\n# 集合\nmy_set = {1, 2, 3}',
-      animation: <DataStructuresAnimation />
+      animation: <DataStructuresAnimation isDarkMode={isDarkMode} />
     },
     {
       id: 'oop',
@@ -608,7 +608,7 @@ const PythonBasics = ({ isDarkMode }: { isDarkMode: boolean }) => {
       icon: <Layers className="w-5 h-5" />,
       description: 'Python是一种面向对象的编程语言，支持类和对象的概念。',
       code: 'class Dog:\n    def __init__(self, name):\n        self.name = name\n\nmy_dog = Dog("Buddy")\nprint(my_dog.name)',
-      animation: <OOPAnimation />
+      animation: <OOPAnimation isDarkMode={isDarkMode} />
     }
   ];
 
