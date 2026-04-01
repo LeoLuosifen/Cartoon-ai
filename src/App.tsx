@@ -15,6 +15,7 @@ import Navbar from './components/Navbar';
 import FortuneGenerator from './components/FortuneGenerator';
 import NamePicker from './components/NamePicker';
 import PythonBasics from './components/PythonBasics';
+import TarotGame from './components/TarotGame';
 import FloatingChat from './components/FloatingChat';
 
 type ThemeMode = 'light' | 'dark' | 'auto';
@@ -111,6 +112,8 @@ export default function App() {
                     <FortuneGenerator isDarkMode={isDarkMode} />
                   ) : activeTab === 'python' ? (
                     <PythonBasics isDarkMode={isDarkMode} />
+                  ) : activeTab === 'tarot' ? (
+                    <TarotGame isDarkMode={isDarkMode} />
                   ) : (
                     <NamePicker isDarkMode={isDarkMode} />
                   )}

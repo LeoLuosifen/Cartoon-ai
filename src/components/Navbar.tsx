@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
-import { Sparkles, UserCheck, Menu, Sun, Moon, Clock, ChevronDown, Code2 } from 'lucide-react';
+import { Sparkles, UserCheck, Menu, Sun, Moon, Clock, ChevronDown, Code2, Scroll } from 'lucide-react';
 import { cn } from '../utils/cn';
 
 type ThemeMode = 'light' | 'dark' | 'auto';
@@ -21,6 +21,7 @@ const Navbar = ({ activeTab, setActiveTab, themeMode, setThemeMode, isDarkMode }
     { id: 'fortune', label: '神秘运势', icon: Sparkles },
     { id: 'picker', label: '随机点名', icon: UserCheck },
     { id: 'python', label: 'Python基础', icon: Code2 },
+    { id: 'tarot', label: '塔罗牌', icon: Scroll },
   ];
 
   const themeOptions = [
