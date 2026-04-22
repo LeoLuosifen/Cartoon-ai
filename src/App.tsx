@@ -17,11 +17,12 @@ import NamePicker from './components/NamePicker';
 import PythonBasics from './components/PythonBasics';
 import TarotGame from './components/TarotGame';
 import FloatingChat from './components/FloatingChat';
+import Navigation from './components/Navigation';
 
 type ThemeMode = 'light' | 'dark' | 'auto';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('fortune');
+  const [activeTab, setActiveTab] = useState('navigation');
   const [themeMode, setThemeMode] = useState<ThemeMode>('auto');
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -114,6 +115,8 @@ export default function App() {
                     <PythonBasics isDarkMode={isDarkMode} />
                   ) : activeTab === 'tarot' ? (
                     <TarotGame isDarkMode={isDarkMode} />
+                  ) : activeTab === 'navigation' ? (
+                    <Navigation isDarkMode={isDarkMode} />
                   ) : (
                     <NamePicker isDarkMode={isDarkMode} />
                   )}
