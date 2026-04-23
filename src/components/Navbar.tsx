@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Drawer } from 'antd';
+import { Button, Drawer, Popover } from 'antd';
 import { Sparkles, UserCheck, Menu, Sun, Moon, Clock, ChevronDown, Code2, Scroll, Link2 } from 'lucide-react';
 import { cn } from '../utils/cn';
+import WeatherInfo from './WeatherInfo';
 
 type ThemeMode = 'light' | 'dark' | 'auto';
 
@@ -16,13 +17,14 @@ interface NavbarProps {
 const Navbar = ({ activeTab, setActiveTab, themeMode, setThemeMode, isDarkMode }: NavbarProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
 
   const navItems = [
+    { id: 'navigation', label: '导航网站', icon: Link2 },
     { id: 'fortune', label: '神秘运势', icon: Sparkles },
     { id: 'picker', label: '随机点名', icon: UserCheck },
     { id: 'python', label: 'Python基础', icon: Code2 },
     { id: 'tarot', label: '塔罗牌', icon: Scroll },
-    { id: 'navigation', label: '导航网站', icon: Link2 },
   ];
 
   const themeOptions = [
@@ -35,16 +37,21 @@ const Navbar = ({ activeTab, setActiveTab, themeMode, setThemeMode, isDarkMode }
   return (
     <>
       <header className={`${isDarkMode ? 'bg-slate-900/80 backdrop-blur-md border-slate-700' : 'bg-white/80 backdrop-blur-md border-slate-900'} border-b-4 h-16 md:h-20 flex items-center justify-between px-4 md:px-8 sticky top-0 z-50`}>
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('fortune')}>
-          <div className="w-12 h-12 bg-primary rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-            <Sparkles className="text-white w-6 h-6" />
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('navigation')}>
+            <div className="w-12 h-12 bg-primary rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+              <Sparkles className="text-white w-6 h-6" />
+            </div>
+            <span className={`text-2xl font-black tracking-tighter hidden sm:block ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>卡通工具站</span>
           </div>
-          <span className={`text-2xl font-black tracking-tighter hidden sm:block ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>卡通工具站</span>
+          
+          {/* 天气信息 */}
+          <WeatherInfo isDarkMode={isDarkMode} />
         </div>
         
         {/* 桌面端：显示功能按钮 */}
         <div className="hidden md:flex items-center gap-2">
-          {navItems.map((tab) => (
+          {navItems.slice(0, 1).map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -59,6 +66,44 @@ const Navbar = ({ activeTab, setActiveTab, themeMode, setThemeMode, isDarkMode }
               <span>{tab.label}</span>
             </button>
           ))}
+          
+          {/* 更多菜单 */}
+          {navItems.length > 1 && (
+            <Popover
+              content={
+                <div className={`p-2 rounded-xl ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border-4`}>
+                  {navItems.slice(1).map((tab) => (
+                    <div
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={cn(
+                        "flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer",
+                        activeTab === tab.id 
+                          ? "bg-primary/10 text-primary" 
+                          : `${isDarkMode ? 'text-white hover:bg-slate-700' : 'text-slate-900 hover:bg-slate-100'}`
+                      )}
+                    >
+                      <tab.icon size={16} />
+                      <span className="font-bold">{tab.label}</span>
+                    </div>
+                  ))}
+                </div>
+              }
+              trigger="click"
+              open={isMoreMenuOpen}
+              onOpenChange={setIsMoreMenuOpen}
+            >
+              <button
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all border-4",
+                  isDarkMode ? 'bg-transparent text-slate-300 border-transparent hover:bg-slate-800' : 'bg-transparent text-slate-600 border-transparent hover:bg-slate-100'
+                )}
+              >
+                <Menu size={20} />
+                <span>更多</span>
+              </button>
+            </Popover>
+          )}
           
           {/* 主题切换 */}
           <div className="ml-4 relative">
