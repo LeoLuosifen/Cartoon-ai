@@ -101,28 +101,151 @@ const WeatherInfo = ({ isDarkMode }: WeatherInfoProps) => {
 
   const fetchUserLocation = async () => {
     try {
-      const response = await fetch('https://ipinfo.io/json');
-      const data = await response.json();
-      if (data.loc) {
-        const [latitude, longitude] = data.loc.split(',').map(Number);
-        setUserLocation({
-          latitude,
-          longitude,
-          city: data.city || '未知城市'
-        });
+      // 优先使用浏览器的Geolocation API获取精确位置
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            console.log('Geolocation API position:', position);
+            
+            // 使用Open-Meteo的地理编码API根据经纬度获取城市名
+            try {
+              const geocodingResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${latitude},${longitude}&count=1&language=zh`);
+              const geocodingData = await geocodingResponse.json();
+              console.log('Geocoding data from Open-Meteo:', geocodingData);
+              
+              let city = '当前位置';
+              if (geocodingData.results && geocodingData.results.length > 0) {
+                const result = geocodingData.results[0];
+                city = result.name || result.admin1 || result.country || '当前位置';
+              }
+              
+              setUserLocation({
+                latitude,
+                longitude,
+                city
+              });
+              console.log('Updated user location from Geolocation API + Open-Meteo:', { 
+                latitude, 
+                longitude, 
+                city 
+              });
+            } catch (geocodingError) {
+              console.error('Error fetching geocoding data:', geocodingError);
+              // 如果获取城市名失败，仍然使用经纬度
+              setUserLocation({
+                latitude,
+                longitude,
+                city: '当前位置'
+              });
+            }
+          },
+          async (error) => {
+            console.error('Geolocation API error:', error);
+            // 如果Geolocation API失败，尝试使用ipinfo.io获取IP位置
+            try {
+              const response = await fetch('https://ipinfo.io/json');
+              const data = await response.json();
+              console.log('User location data from ipinfo.io:', data);
+              
+              if (data.loc) {
+                const [latitude, longitude] = data.loc.split(',').map(Number);
+                const city = data.city || data.region || data.country || '未知城市';
+                setUserLocation({
+                  latitude,
+                  longitude,
+                  city
+                });
+                console.log('Updated user location from ipinfo.io:', { 
+                  latitude, 
+                  longitude, 
+                  city 
+                });
+              } else {
+                // 如果ipinfo.io也失败，使用默认位置
+                setUserLocation({
+                  latitude: 39.9042,
+                  longitude: 116.4074,
+                  city: '北京'
+                });
+              }
+            } catch (ipinfoError) {
+              console.error('Error fetching user location from ipinfo.io:', ipinfoError);
+              // 如果所有方法都失败，使用默认位置
+              setUserLocation({
+                latitude: 39.9042,
+                longitude: 116.4074,
+                city: '北京'
+              });
+            }
+          }
+        );
+      } else {
+        // 如果浏览器不支持Geolocation API，尝试使用ipinfo.io
+        try {
+          const response = await fetch('https://ipinfo.io/json');
+          const data = await response.json();
+          console.log('User location data from ipinfo.io:', data);
+          
+          if (data.loc) {
+            const [latitude, longitude] = data.loc.split(',').map(Number);
+            const city = data.city || data.region || data.country || '未知城市';
+            setUserLocation({
+              latitude,
+              longitude,
+              city
+            });
+            console.log('Updated user location from ipinfo.io:', { 
+              latitude, 
+              longitude, 
+              city 
+            });
+          } else {
+            // 如果ipinfo.io失败，使用默认位置
+            setUserLocation({
+              latitude: 39.9042,
+              longitude: 116.4074,
+              city: '北京'
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching user location:', error);
+          // 出错时使用默认位置
+          setUserLocation({
+            latitude: 39.9042,
+            longitude: 116.4074,
+            city: '北京'
+          });
+        }
       }
     } catch (error) {
       console.error('Error fetching user location:', error);
+      // 出错时使用默认位置
+      setUserLocation({
+        latitude: 39.9042,
+        longitude: 116.4074,
+        city: '北京'
+      });
     }
   };
 
   const fetchWeatherData = async () => {
     try {
       setLoading(true);
+      console.log('Fetching weather data for location:', userLocation);
       const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${userLocation.latitude}&longitude=${userLocation.longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min`);
       const data = await response.json();
+      console.log('Weather data:', data);
       
       setWeatherData({
+        temperature: data.current_weather.temperature,
+        maxTemperature: data.daily.temperature_2m_max[0],
+        minTemperature: data.daily.temperature_2m_min[0],
+        weatherCode: data.current_weather.weathercode,
+        weatherDescription: getWeatherDescription(data.current_weather.weathercode),
+        city: userLocation.city,
+      });
+      console.log('Updated weather data:', {
         temperature: data.current_weather.temperature,
         maxTemperature: data.daily.temperature_2m_max[0],
         minTemperature: data.daily.temperature_2m_min[0],
