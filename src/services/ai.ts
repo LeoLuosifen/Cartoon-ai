@@ -13,7 +13,7 @@ type DeepSeekChatCompletionResponse = {
 };
 
 const DEFAULT_BASE_URL = "https://api.deepseek.com";
-const DEFAULT_MODEL = "deepseek-chat";
+const DEFAULT_MODEL = "deepseek-v4-flash";
 
 function getDeepSeekApiKey(): string | undefined {
   // 优先从 Vite 环境变量获取（前端标准方式）
