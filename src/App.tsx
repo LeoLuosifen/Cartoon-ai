@@ -18,6 +18,7 @@ import PythonBasics from './components/PythonBasics';
 import TarotGame from './components/TarotGame';
 import FloatingChat from './components/FloatingChat';
 import Navigation from './components/Navigation';
+import Privacy from './pages/Privacy';
 
 type ThemeMode = 'light' | 'dark' | 'auto';
 
@@ -117,6 +118,8 @@ export default function App() {
                     <TarotGame isDarkMode={isDarkMode} />
                   ) : activeTab === 'navigation' ? (
                     <Navigation isDarkMode={isDarkMode} />
+                  ) : activeTab === 'privacy' ? (
+                    <Privacy onBack={() => setActiveTab('navigation')} />
                   ) : (
                     <NamePicker isDarkMode={isDarkMode} />
                   )}
@@ -126,12 +129,9 @@ export default function App() {
           </main>
 
           <footer className={`${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-900'} border-t-4 py-4 text-center`}>
-            <div className="flex flex-col items-center gap-2">
-              {/*<div className="flex gap-4">
-                <a href="#" className={`${isDarkMode ? 'text-slate-400 hover:text-primary' : 'text-slate-400 hover:text-primary'} transition-colors font-bold`}>隐私政策</a>
-                <a href="#" className={`${isDarkMode ? 'text-slate-400 hover:text-primary' : 'text-slate-400 hover:text-primary'} transition-colors font-bold`}>服务条款</a>
-                <a href="#" className={`${isDarkMode ? 'text-slate-400 hover:text-primary' : 'text-slate-400 hover:text-primary'} transition-colors font-bold`}>联系我们</a>
-              </div>*/}
+            <div className="flex flex-row items-center justify-center gap-4">
+              <button onClick={() => setActiveTab('privacy')} className={`${isDarkMode ? 'text-slate-400 hover:text-primary' : 'text-slate-400 hover:text-primary'} transition-colors font-bold bg-transparent border-none cursor-pointer`}>隐私政策</button>
+              <span className={`${isDarkMode ? 'text-slate-400' : 'text-slate-400'}`}>|</span>
               <p className={`${isDarkMode ? 'text-slate-400' : 'text-slate-400'} font-bold text-sm`}>
                 © 2026 卡通工具站. 用 ✨ 和 智慧 驱动.
               </p>
